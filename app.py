@@ -9,6 +9,7 @@ db.init_app(app)
 migrate = Migrate(app, db)
 CORS(app)
 
+# ------------  USER ENDPOINTS ----------------
 
 @app.route('/createUser', methods=['POST'])
 def create_user():
@@ -47,7 +48,7 @@ def get_user():
     "data": users_serializados
   }), 200
 
-# EPISODE 
+# ------------  EPISODE ENDPOINTS ----------------
 
 @app.route('/createEpisodes', methods=['POST'])
 def create_episodes():
@@ -67,7 +68,7 @@ def create_episodes():
     "message": "Episode created successfully",
   }, 201
 
-# CHARACTERS 
+# ---------------- CHARACTERS ENDPOINTS ----------------
 
 @app.route('/createCharacter', methods=['POST'])
 def create_character():
@@ -81,18 +82,34 @@ def create_character():
     character.species = new_character['species']
     character.origin = new_character['origin']
     character.location = new_character['location']
-    character.episode = new_character['episode']
+
+    # Asociar episodios al personaje
+    for episode_id in new_character['episode']:
+        episode = Episode.query.get(episode_id)
+        if episode:
+            character.episodes.append(episode)
 
     db.session.add(character)
 
   db.session.commit()
 
+
   return {
     "message": "characters created successfully",
   }, 201
 
+@app.route("/getCharacters", methods=['GET'])
+def get_characters():
+  characters = Character.query.all()
+  characters_serializados = [character.serialize() for character in characters]
 
-# LOCATIONS 
+  return jsonify({
+    "status": "success",
+    "data": characters_serializados
+  }), 200
+
+
+# ---------------- LOCATIONS ENDPOINTS ----------------
 
 @app.route('/createLocations', methods=['POST'])
 def create_locations():

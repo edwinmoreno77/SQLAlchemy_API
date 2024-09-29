@@ -43,28 +43,28 @@ character_episode = db.Table('character_episode',
 )
 
 class Character(db.Model):
-    __tablename__ = "character"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    status = db.Column(db.String(50), nullable=True)
-    gender = db.Column(db.String(50), nullable=True)
-    specie = db.Column(db.String(50), nullable=True)
-    origin = db.Column(db.Integer, db.ForeignKey('location.id'), nullable=True)
-    location = db.Column(db.Integer, db.ForeignKey('location.id'), nullable=True)
-    episodes = db.relationship('Episode', secondary=character_episode, lazy='subquery',
-                                backref=db.backref('characters', lazy=True))
-
-    def serialize(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'status': self.status,
-            'gender': self.gender,
-            'specie': self.specie,
-            'origin': self.origin,
-            'location': self.location,
-            'episodes': [episode.serialize() for episode in self.episodes] 
-        }
+  __tablename__ = "character"
+  id = db.Column(db.Integer, primary_key=True)
+  name = db.Column(db.String(50), nullable=False)
+  status = db.Column(db.String(50), nullable=True)
+  gender = db.Column(db.String(50), nullable=True)
+  specie = db.Column(db.String(50), nullable=True)
+  origin = db.Column(db.Integer, db.ForeignKey('location.id'), nullable=True)
+  location = db.Column(db.Integer, db.ForeignKey('location.id'), nullable=True)
+  episodes = db.relationship('Episode', secondary=character_episode, lazy='subquery',
+                              backref=db.backref('characters', lazy=True))
+  
+  def serialize(self):
+      return {
+          'id': self.id,
+          'name': self.name,
+          'status': self.status,
+          'gender': self.gender,
+          'specie': self.specie,
+          'origin': self.origin,
+          'location': self.location,
+          'episodes': [episode.serialize() for episode in self.episodes] 
+      }
 
   
 class Episode(db.Model):
