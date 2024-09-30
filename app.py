@@ -21,13 +21,14 @@ def index():
 def create_user():
     return user_handler.create_user()
 
+@app.route('/getUsers', methods=['GET'])
+def get_users():
+    return user_handler.get_users()
+
 @app.route('/getUserById/<int:id>', methods=['GET'])
 def get_user_by_id(id):
     return user_handler.get_user_by_id(id)
 
-@app.route('/getUsers', methods=['GET'])
-def get_users():
-    return user_handler.get_users()
 
 
 # --------- episodes ---------
@@ -38,6 +39,10 @@ def create_episodes():
 @app.route('/getEpisodes', methods=['GET'])
 def get_episodes():
     return episode_handler.get_episodes()
+
+@app.route('/getEpisode/<int:id>', methods=['GET'])
+def get_episode_by_id(id):
+    return episode_handler.get_episode_by_id(id)
 
 
 # --------- characters ---------

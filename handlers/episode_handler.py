@@ -36,3 +36,14 @@ def get_episodes():
     return jsonify({
         "results": episodes_serialized
     }), 201 
+
+def get_episode_by_id(id):
+
+    episode = Episode.query.filter_by(id=id).first()
+    episode_serialized = episode.serialize()
+
+    episode_serialized["characters"] = json.loads(episode_serialized["characters"])
+
+    return jsonify({
+        "results": episode_serialized,
+    }), 201
