@@ -1,15 +1,15 @@
-# Ejercicio practico Python API SQLAlchemy
+# Practical exercise Python API SQLAlchemy
 
-## Instrucciones
+## Intruccions
 
-Clonar el repositorio `https://github.com/edwinmoreno77/SQLAlchemy_API.git`
-
-- cambiar a la carpeta `cd SQLAlchemy_API`
+- clone the repository `https://github.com/edwinmoreno77/SQLAlchemy_API.git`
+- change to folder `cd SQLAlchemy_API`
 - pipenv shell
 - pipenv install
-- pipenv db init
-- pipenv db migrate
-- pipenv db upgrade
+- flask db init
+- flask db migrate
+- flask db upgrade
 - python app.py
+- open: `localhost:3000`
 
-Crear todos los datos ubicados en la carpeta data usando sus endpoints de creación en app.py.
+Create all data located in the data folder using your creation endpoints in app.py.
