@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, jsonify
 from models import db, Episode
 import json
 
@@ -20,3 +20,19 @@ def create_episodes():
     return {
         "message": "Episodes created successfully",
     }, 201
+
+
+def get_episodes():
+
+    episodes = Episode.query.all()
+    episodes_serialized = []
+
+    for episode in episodes:
+        episode_serialized = episode.serialize()
+        episode_serialized["characters"] = json.loads(episode_serialized["characters"])
+
+        episodes_serialized.append(episode_serialized)
+
+    return jsonify({
+        "results": episodes_serialized
+    }), 201 

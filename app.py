@@ -35,11 +35,15 @@ def get_users():
 def create_episodes():
     return episode_handler.create_episodes()
 
+@app.route('/getEpisodes', methods=['GET'])
+def get_episodes():
+    return episode_handler.get_episodes()
+
 
 # --------- characters ---------
-@app.route('/createCharacter', methods=['POST'])
+@app.route('/createCharacters', methods=['POST'])
 def create_character():
-    return character_handler.create_character()
+    return character_handler.create_characters()
 
 @app.route('/getCharacters', methods=['GET'])
 def get_characters():

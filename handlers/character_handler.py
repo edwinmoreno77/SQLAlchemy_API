@@ -2,7 +2,7 @@ from flask import request, jsonify
 from models import db, Character
 import json
 
-def create_character():
+def create_characters():
     data = request.json
 
     for new_character in data["characters"]:
@@ -38,8 +38,7 @@ def get_characters():
         serialized_characters.append(serialized_character)
 
     return jsonify({
-        "status": "success",
-        "data": serialized_characters
+        "results": serialized_characters
     }), 200
 
 def get_character_by_id(id):
@@ -48,7 +47,6 @@ def get_character_by_id(id):
     character_serialized["origin"] = json.loads(character_serialized["origin"])
     character_serialized["location"] = json.loads(character_serialized["location"])
     character_serialized["episodes"] = json.loads(character_serialized["episodes"])
-    return {
-        "status": "success",
-        "data": character_serialized
-    }, 200
+    return jsonify({
+        "results": character_serialized
+    }), 200
