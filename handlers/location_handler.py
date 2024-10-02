@@ -31,6 +31,16 @@ def get_locations():
         serialized_locations.append(serialized_location)
 
     return jsonify({
-        "status": "success",
-        "data": serialized_locations
+        "results": serialized_locations
+    }), 200
+
+
+def get_location_by_id(id):
+    
+    location = Location.query.filter_by(id=id).first()
+    serialized_location = location.serialize()
+    serialized_location["residents"] = json.loads(serialized_location["residents"])
+
+    return jsonify({
+        "results": serialized_location
     }), 200

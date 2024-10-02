@@ -17,6 +17,7 @@ def index():
 
 
 # ------- users  ---------
+
 @app.route('/createUser', methods=['POST'])
 def create_user():
     return user_handler.create_user()
@@ -29,9 +30,17 @@ def get_users():
 def get_user_by_id(id):
     return user_handler.get_user_by_id(id)
 
+@app.route('/addFavorite', methods=['POST'])
+def add_favorite():
+    return user_handler.add_favorite()
+
+@app.route('/deleteFavorite', methods=['DELETE'])
+def delete_favorite():
+    return user_handler.delete_favorite()
 
 
 # --------- episodes ---------
+
 @app.route('/createEpisodes', methods=['POST'])
 def create_episodes():
     return episode_handler.create_episodes()
@@ -46,6 +55,7 @@ def get_episode_by_id(id):
 
 
 # --------- characters ---------
+
 @app.route('/createCharacters', methods=['POST'])
 def create_character():
     return character_handler.create_characters()
@@ -60,6 +70,7 @@ def get_character_by_id(id):
 
 
 # --------- locations ---------
+
 @app.route('/createLocations', methods=['POST'])
 def create_locations():
     return location_handler.create_locations()
@@ -67,6 +78,10 @@ def create_locations():
 @app.route('/getLocations', methods=['GET'])
 def get_locations():
     return location_handler.get_locations()
+
+@app.route('/getLocation/<int:id>', methods=['GET'])
+def get_location_by_id(id):
+    return location_handler.get_location_by_id(id)
 
 
 if __name__ == '__main__': 
