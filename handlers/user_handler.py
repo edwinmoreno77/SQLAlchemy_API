@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from models import db, User, Favorites, Character, Location, Episode
+from models import db, User, Favorites
 
 def create_user():
     data = request.json

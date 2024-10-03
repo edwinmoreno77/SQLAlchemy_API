@@ -1,10 +1,5 @@
 from . import db
 
-user_favorites = db.Table('user_favorites',
-    db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
-    db.Column('favorite_id', db.Integer, db.ForeignKey('favorites.id'), primary_key=True)
-)
-
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -12,8 +7,7 @@ class User(db.Model):
     last_name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    favorites = db.relationship('Favorites', secondary=user_favorites, lazy='subquery',
-                                backref=db.backref('users', lazy=True))
+    favorites = db.relationship('Favorites',  backref='users')
 
     def serialize(self):
         return {
@@ -24,3 +18,4 @@ class User(db.Model):
             "favorites": [favorite.serialize() for favorite in self.favorites]
         }
     
+
