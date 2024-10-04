@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from models import db, User, Favorites
+from models import db, User, Character
 
 def create_user():
     data = request.json
@@ -37,22 +37,15 @@ def add_favorite():
     data = request.json
 
     user = User.query.get(data['user_id'])
+    character = Character.query.get(data['character_id'])
 
     if not user:
         return jsonify({'message': 'User not found'}), 404
 
-    # Verify if favorite exists
-    favorite = Favorites.query.filter_by(character_id=data['character_id'], user_id=user.id).first()
-
-    if favorite:
+    if character in user.favorite_characters:
         return jsonify({'message': 'Favorite already exists'}), 400
 
-    # if not exists, add favorite
-    favorite = Favorites(character_id=data['character_id'], user_id=user.id) 
-    db.session.add(favorite)
-    db.session.commit()  
-
-    user.favorites.append(favorite)
+    user.favorite_characters.append(character)
     db.session.commit()  
 
     return jsonify({
@@ -64,16 +57,15 @@ def delete_favorite():
 
     data = request.json
     user = User.query.get(data['user_id'])
+    character = Character.query.get(data['character_id'])
 
     if not user:
         return jsonify({'message': 'User not found'}), 404
 
-    favorite = Favorites.query.filter_by(character_id=data['character_id'], user_id=user.id).first()
-
-    if not favorite:
+    if character not in user.favorite_characters:
         return jsonify({'message': 'Favorite does not exist'}), 404
-
-    db.session.delete(favorite)
+    
+    user.favorite_characters.remove(character)
     db.session.commit()
 
     return jsonify({'message': 'Favorite deleted successfully'}), 200
