@@ -1,20 +1,22 @@
 from flask import request, jsonify
-from models import db, Location
-import json
+from models import db, Location, Character
 
 def create_locations():
     data = request.json
 
     for new_location in data["locations"]:
         location = Location()
-        location.name = json.dumps(new_location['name'])
-        location.type = json.dumps(new_location['type'])
-        location.dimension = json.dumps(new_location['dimension'])
-        location.residents = json.dumps(new_location['residents'])
-        location.url = json.dumps(new_location['url'])
-
+        location.name = new_location['name']
+        location.type = new_location['type']
+        location.dimension = new_location['dimension']
+        location.url = new_location['url']
         db.session.add(location)
 
+        for character_url in new_location['residents']:
+            character_id = int(character_url.split('/')[-1])
+            character = Character.query.get(character_id)
+            if character:
+                    location.residents.append(character)
     db.session.commit()
 
     return {
@@ -27,7 +29,6 @@ def get_locations():
 
     for location in locations:
         serialized_location = location.serialize()
-        serialized_location["residents"] = json.loads(serialized_location["residents"])
         serialized_locations.append(serialized_location)
 
     return jsonify({
@@ -39,7 +40,6 @@ def get_location_by_id(id):
     
     location = Location.query.filter_by(id=id).first()
     serialized_location = location.serialize()
-    serialized_location["residents"] = json.loads(serialized_location["residents"])
 
     return jsonify({
         "results": serialized_location
